@@ -10,9 +10,6 @@ app.config['MONGODB_SETTINGS'] = {
 }
 app.config['SECRET_KEY'] = 'yasosalmenyaebalidvajdi'
 
-app.config['x-rapidapi-host'] = "rawg-video-games-database.p.rapidapi.com"
-app.config['x-rapidapi-key'] = "e4a0b42e90msh2c35ebcb5a109ffp111f3ejsn92fac4b0d9e7"
-
 db = MongoEngine(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'

@@ -4,6 +4,52 @@ $(document).ready(function() {
   let nextURL = ``
   let previousURL = ``
 
+  function createButtons() {
+    let btnNext = document.createElement('button')
+    btnNext.classList.add('btn', 'btn-lg', 'btn-info')
+    btnNext.setAttribute('id', 'next')
+    btnNext.innerHTML = 'Next'
+    let btnPrevious = document.createElement('button')
+    btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
+    btnPrevious.setAttribute('id', 'previous')
+    btnPrevious.innerHTML = 'Previous'
+
+    if (previousURL) {
+      $(".next-prev").append(btnPrevious)
+    }
+    if (nextURL) {
+      $(".next-prev").append(btnNext)
+    }
+  }
+
+  function populateURLs(response) {
+    nextURL = response.data.next
+    previousURL = response.data.previous
+  }
+
+  function createCards(container, response) {
+    for (i=0;i<response.data.results.length;i++) {
+      let gameCard = createGameCard(response.data.results[i])
+      container.append(gameCard)
+    }
+  }
+
+  // Generate card HTML
+  function createGameCard(game) {
+    let gameCard = `
+      <div class="card text-center owl-item">
+        <img class="card-img-top" width="500px" height="auto" src=${game.background_image} alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">${game.name}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="./game/${game.id}" class="btn btn-primary">More</a>
+          </div>
+      </div>
+      `
+    return gameCard
+  }
+
+
   // Display search results by sending the form data to Flask and rendering received response on page
   // after the search button has been pressed
   $('#search-form').submit(async function(event) {
@@ -34,97 +80,46 @@ $(document).ready(function() {
 
     sessionStorage.setItem('currentPage', baseURL + '?search=' + $('#search')[0].value)
 
-    nextURL = games.data.next
-    previousURL = games.data.previous
-
-    for (i=0;i<games.data.results.length;i++) {
-      let gameCard = createGameCard(games.data.results[i])
-      $gamesContainer.append(gameCard)
-    }
-
-    let btnNext = document.createElement('button')
-    btnNext.classList.add('btn', 'btn-lg', 'btn-info')
-    btnNext.setAttribute('id', 'next')
-    btnNext.innerHTML = 'Next'
-    let btnPrevious = document.createElement('button')
-    btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
-    btnPrevious.setAttribute('id', 'previous')
-    btnPrevious.innerHTML = 'Previous'
-
-    if (previousURL) {
-      $(".next-prev").append(btnPrevious)
-    }
-    if (nextURL) {
-      $(".next-prev").append(btnNext)
-    }
+    populateURLs(games)
+    createCards($gamesContainer, games)
+    createButtons()
 
   })
 
   // Functionality for NEXT and PREVIOUS buttons, assigning corresponing links to next and previous URLs
   // This is awful and needs to be rewritten
-  $('.games').on('click', 'button', async function(event) {
+  $('.next-prev').on('click', 'button', async function(event) {
     event.stopImmediatePropagation()
     event.preventDefault()
+
     let $gamesContainer = $('.games')
     $gamesContainer.empty()
+
+    let $buttonContainer = $('.next-prev')
+    $buttonContainer.empty()
 
     if (event.target.id === 'next') {
       let games = await axios.get(nextURL)
 
       sessionStorage.setItem('currentPage', nextURL)
 
-      nextURL = games.data.next
-      previousURL = games.data.previous
-            
-      for (i=0;i<games.data.results.length;i++) {
-        let gameCard = createGameCard(games.data.results[i])
-        $gamesContainer.append(gameCard)
-      }
+      populateURLs(games)
+      createCards($gamesContainer, games)
+
     }
 
     else if (event.target.id === 'previous') {
       let games = await axios.get(previousURL)
       sessionStorage.setItem('currentPage', previousURL)
-      nextURL = games.data.next
-      previousURL = games.data.previous
-        
-      for (i=0;i<games.data.results.length;i++) {
-        let gameCard = createGameCard(games.data.results[i])
-        $gamesContainer.append(gameCard)
-      }
+
+      populateURLs(games)
+      createCards($gamesContainer, games)
+    
     }    
     
-    let btnNext = document.createElement('button')
-    btnNext.classList.add('btn', 'btn-lg', 'btn-info')
-    btnNext.setAttribute('id', 'next')
-    btnNext.innerHTML = 'Next'
-    let btnPrevious = document.createElement('button')
-    btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
-    btnPrevious.setAttribute('id', 'previous')
-    btnPrevious.innerHTML = 'Previous'
+    createButtons()
 
-    if (previousURL) {
-      $(".next-prev").append(btnPrevious)
-    }
-    if (nextURL) {
-      $(".next-prev").append(btnNext)
-    }
   })
-
-  // Generate card HTML
-  function createGameCard(game) {
-    let gameCard = `
-      <div class="card text-center owl-item">
-        <img class="card-img-top" width="500px" height="auto" src=${game.background_image} alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">${game.name}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="./game/${game.id}" class="btn btn-primary">More</a>
-          </div>
-      </div>
-      `
-    return gameCard
-  }
 
   // If user left the Search Page during browsing, render the same page he left at
   if (sessionStorage['currentPage']) {
@@ -133,29 +128,11 @@ $(document).ready(function() {
       $gamesContainer.empty()
     
       let games = await axios.get(sessionStorage['currentPage'])
-        for (i=0;i<games.data.results.length;i++) {
-          let gameCard = createGameCard(games.data.results[i])
-          $gamesContainer.append(gameCard)
-        }
+        
+      createCards($gamesContainer, games)
+      populateURLs(games)
+      createButtons()
 
-      nextURL = games.data.next
-      previousURL = games.data.previous
-            
-      let btnNext = document.createElement('button')
-      btnNext.classList.add('btn', 'btn-lg', 'btn-info')
-      btnNext.setAttribute('id', 'next')
-      btnNext.innerHTML = 'Next'
-      let btnPrevious = document.createElement('button')
-      btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
-      btnPrevious.setAttribute('id', 'previous')
-      btnPrevious.innerHTML = 'Previous'
-            
-      if (previousURL) {
-        $(".next-prev").append(btnPrevious)
-      }
-      if (nextURL) {
-        $(".next-prev").append(btnNext)
-      }
     })()
   }
 

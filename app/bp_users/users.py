@@ -61,8 +61,3 @@ def account():
     form = CreateCollectionForm()
 
     return render_template('account.html', user=current_user, games=games, form=form)
-
-
-
-def get_game(game_id):
-    return requests.get(f'https://api.rawg.io/api/games/{game_id}').json()

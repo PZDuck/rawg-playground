@@ -27,10 +27,10 @@ def contact():
 def search():
     form = SearchForm()
 
-    publishers = requests.get('https://api.rawg.io/api/publishers?page_size=40').json()
+    publishers = requests.get('https://api.rawg.io/api/publishers', params={ 'page_size': 40 }).json()
     form.publishers.choices += [(i['id'], i['name']) for i in publishers['results']]
 
-    genres = requests.get('https://api.rawg.io/api/genres?ordering=-games_count').json()
+    genres = requests.get('https://api.rawg.io/api/genres', params={ 'ordering': '-games_count' }).json()
     form.genres.choices += [(i['id'], i['name']) for i in genres['results']]
 
     return render_template('search.html', form=form)
@@ -92,7 +92,6 @@ def create_collection():
     data = request.get_json()
     collection = data['data']
     user = User.objects(email=current_user.email).first()
-    print(collection)
     user.create_collection(collection['collection_name'], collection['collection_description'], collection['collection_image'], collection['date_created'])
     return jsonify(user)
 
