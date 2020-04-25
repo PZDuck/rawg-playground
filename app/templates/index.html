@@ -90,7 +90,7 @@
         <div class="owl-carousel">
           {% for game in games %}
           <a href="{{ url_for('game_details', game_id=game.id) }}">
-            <div class="card text-center owl-item">
+            <div class="card text-center">
               <img class="card-img-top" src="{{ game.background_image }}" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">{{ game.name }}</h5>

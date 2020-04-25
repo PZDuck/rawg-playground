@@ -71,17 +71,17 @@ def get_games():
 @app.route('/save-game', methods=['POST'])
 @login_required
 def save_game():
-    data = request.get_json()
-    game_id = data['data']['id']
+    resp = request.get_json()
+    data = resp['data']
     user = User.objects(email=current_user.email).first()
     
-    if game_id in user.saved_games.keys():
-        del user.saved_games[game_id]
+    if data['id'] in user.saved_games.keys():
+        del user.saved_games[data['id']]
         user.save()
         session['saved_games'] = list(user.saved_games.keys())
         return jsonify(user)
     
-    user.save_game(game_id)
+    user.save_game(data['id'], data['status'])
     session['saved_games'] = list(user.saved_games.keys())
     return jsonify(user)
 
@@ -92,6 +92,7 @@ def create_collection():
     data = request.get_json()
     collection = data['data']
     user = User.objects(email=current_user.email).first()
+    print(collection)
     user.create_collection(collection['collection_name'], collection['collection_description'], collection['collection_image'], collection['date_created'])
     return jsonify(user)
 

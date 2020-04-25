@@ -43,19 +43,19 @@ $(document).ready(function() {
     }
 
     let btnNext = document.createElement('button')
-    btnNext.classList.add('btn', 'btn-success')
+    btnNext.classList.add('btn', 'btn-lg', 'btn-info')
     btnNext.setAttribute('id', 'next')
     btnNext.innerHTML = 'Next'
     let btnPrevious = document.createElement('button')
-    btnPrevious.classList.add('btn', 'btn-success')
+    btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
     btnPrevious.setAttribute('id', 'previous')
     btnPrevious.innerHTML = 'Previous'
 
     if (previousURL) {
-      $gamesContainer.append(btnPrevious)
+      $(".next-prev").append(btnPrevious)
     }
     if (nextURL) {
-      $gamesContainer.append(btnNext)
+      $(".next-prev").append(btnNext)
     }
 
   })
@@ -95,19 +95,19 @@ $(document).ready(function() {
     }    
     
     let btnNext = document.createElement('button')
-    btnNext.classList.add('btn', 'btn-success')
+    btnNext.classList.add('btn', 'btn-lg', 'btn-info')
     btnNext.setAttribute('id', 'next')
     btnNext.innerHTML = 'Next'
     let btnPrevious = document.createElement('button')
-    btnPrevious.classList.add('btn', 'btn-success')
+    btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
     btnPrevious.setAttribute('id', 'previous')
     btnPrevious.innerHTML = 'Previous'
 
     if (previousURL) {
-      $gamesContainer.append(btnPrevious)
+      $(".next-prev").append(btnPrevious)
     }
     if (nextURL) {
-      $gamesContainer.append(btnNext)
+      $(".next-prev").append(btnNext)
     }
   })
 
@@ -142,20 +142,26 @@ $(document).ready(function() {
       previousURL = games.data.previous
             
       let btnNext = document.createElement('button')
-      btnNext.classList.add('btn', 'btn-success')
+      btnNext.classList.add('btn', 'btn-lg', 'btn-info')
       btnNext.setAttribute('id', 'next')
       btnNext.innerHTML = 'Next'
       let btnPrevious = document.createElement('button')
-      btnPrevious.classList.add('btn', 'btn-success')
+      btnPrevious.classList.add('btn', 'btn-lg', 'btn-info')
       btnPrevious.setAttribute('id', 'previous')
       btnPrevious.innerHTML = 'Previous'
             
       if (previousURL) {
-        $gamesContainer.append(btnPrevious)
+        $(".next-prev").append(btnPrevious)
       }
       if (nextURL) {
-        $gamesContainer.append(btnNext)
+        $(".next-prev").append(btnNext)
       }
     })()
   }
+
+  // Prevent the dropdown form from closing on click
+  $(document).on('click', '.dropdown .dropdown-menu', function(event) {
+    event.stopPropagation()
+  })
+
 })

@@ -13,7 +13,7 @@ def load_user(user_id):
 
     
 # UTIL FUNC
-def slugify(self, name):
+def slugify(name):
     name = name.lower().replace(' ', '-')
     return name
 
@@ -43,8 +43,8 @@ class User(UserMixin, db.DynamicDocument):
                 return user
         return False
 
-    def save_game(self, game_id):
-        self.saved_games[game_id] = 'No status'
+    def save_game(self, game_id, status):
+        self.saved_games[game_id] = status
         self.save()
         return self
     

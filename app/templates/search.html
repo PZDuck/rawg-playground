@@ -6,21 +6,75 @@
 
 {% block content %}
 
-<div class="container">
-  <form method="POST" id="search-form">
-    {{ form.hidden_tag() }}
+<div class="jumbotron jumbotron-fluid">
+	<div class="row search-bar">
+		<div class="col-md-12">
+      <form method="POST" id="search-form">
+        <div class="input-group" id="adv-search">
+            <div style="flex: auto;">
+              {{ form.search(placeholder=form.search.label.text, class="form-control") }}
+              {% if form.search.errors %}
+              <ul class="errors">
+                {% for error in form.search.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
 
-    {% for field in form if field.widget.input_type != 'hidden' %}
-      {% for error in field.errors %}
-      <span class="text-danger">{{ error }}</span>
-      {% endfor %}
-      {{ field(placeholder=field.label.text, class="form-control") }}
-    {% endfor %}
+          <div class="input-group-btn">
+            <div class="btn-group" role="group">
+              <div class="dropdown dropdown-lg">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
 
-    <button class="search btn btn-success">Search</button>
-  </form>
+                    <div class="form-group">{{ form.publishers.label }} {{ form.publishers(class="form-control custom-select") }}
+                      {% if form.publishers.errors %}
+                      <ul class="errors">
+                        {% for error in form.publishers.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group">{{ form.genres.label }} {{ form.genres(class="form-control custom-select") }}
+                      {% if form.genres.errors %}
+                      <ul class="errors">
+                        {% for error in form.genres.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group">{{ form.order_by.label }} {{ form.order_by(class="form-control custom-select") }}
+                      {% if form.order_by.errors %}
+                      <ul class="errors">
+                        {% for error in form.order_by.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <button class="search btn btn-success">Search</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+	  </div>
+  </div>
 </div>
 
+
+
+
+
+
 <div class="games container"></div>
+<div class="next-prev text-center"></div>
 
 {% endblock %}

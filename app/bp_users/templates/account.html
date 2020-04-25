@@ -5,105 +5,190 @@
 {% endblock %}
 
 {% block content %}
-  <section class="dashboard-counts section-padding">
-    <div class="container-fluid">
-      <div class="row top-bar">
-        <div class="col-xl-4 col-md-8 col-8">
-          <div class="wrapper count-title d-flex">
-            <div class="icon"><i class="icon-user"></i></div>
-              <div class="name"><strong class="text-uppercase">User</strong>
-                <div class="user-info">
-                  <ul>
-                    <li>{{ user.email }}</li>
-                  </ul>
 
-                  <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    Create Collection
-                  </button>
+<div class="container">
+    <div class="row my-2">
+        <div class="col-lg-8 order-lg-2">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" data-target="#wtp" data-toggle="tab" class="nav-link">Want to Play</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" data-target="#cp" data-toggle="tab" class="nav-link">Currently Playing</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" data-target="#finished" data-toggle="tab" class="nav-link">Finished</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" data-target="#collections" data-toggle="tab" class="nav-link">Collections</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
+                </li>
+            </ul>
+            <div class="tab-content py-4">
+                <div class="tab-pane active" id="profile">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Bio</h5>
+                            <p>Lorem Ipsum</p>
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <img class="center-block" src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle img-responsive">
-                        </div>
-                        <div class="modal-body">
-                          <form method="POST" id="create-collection-form">
-                              {{ form.hidden_tag() }}
+                            <h6>Preferences:</h6>
+                            <p>*list of tags*</p>
+                            
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                              Create Collection
+                            </button>
 
-                              {% for field in form if field.widget.input_type != 'hidden' %}
-                                  {% for error in field.errors %}
-                                      <span class="text-danger">{{ error }}</span>
-                                  {% endfor %}
-                                  {{ field(placeholder=field.label.text, class="form-control") }}
-                              {% endfor %}
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <img class="center-block" src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle img-responsive">
+                                  </div>
+                                  <div class="modal-body">
+                                    <form method="POST" id="create-collection-form">
+                                        {{ form.hidden_tag() }}
 
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-success create-collection">Create</button>
+                                        {% for field in form if field.widget.input_type != 'hidden' %}
+                                            {% for error in field.errors %}
+                                                <span class="text-danger">{{ error }}</span>
+                                            {% endfor %}
+                                            {{ field(placeholder=field.label.text, class="form-control") }}
+                                        {% endfor %}
+
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success create-collection">Create</button>
+                                      </div>
+                                    </form>
+                                </div>
+                              </div>
                             </div>
-                          </form>
+
+                          </div>
+                        </div>
+
+                        <div class="col-xl-2 col-md-4 col-6">
+                            <div class="wrapper count-title d-flex">
+                              <div class="icon"><i class="icon-padnote"></i></div>
+                              <div class="name"><strong class="text-uppercase">Want to Play</strong>
+                                <div class="count-number">{{ games['wtp']|length }}</div>
+                              </div>
+                            </div>
+                          </div>
+                      
+                          <div class="col-xl-2 col-md-4 col-6">
+                            <div class="wrapper count-title d-flex">
+                              <div class="icon"><i class="icon-padnote"></i></div>
+                              <div class="name"><strong class="text-uppercase">Currently Playing</strong>
+                                <div class="count-number">{{ games['cp']|length }}</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-xl-2 col-md-4 col-6">
+                            <div class="wrapper count-title d-flex">
+                              <div class="icon"><i class="icon-padnote"></i></div>
+                              <div class="name"><strong class="text-uppercase">Finished Playing</strong>
+                                <div class="count-number">{{ games['finished']|length }}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    <!--/row-->
+                </div>
+
+                {% for status in games %}
+                <div class="tab-pane" id="{{ status }}">
+                  <section class="dashboard-header section-padding">
+                      <div class="container-fluid">
+                        <div class="row d-flex align-items-md-stretch">
+
+                          <div class="container">        
+                            <div class="row">
+                              {% for game in games[status] %}
+                              <div class="col-lg-4 card text-center">
+                                <img class="card-img-top" width="100%" height="250px" src='{{ game.background_image }}'' alt="Card image cap">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ game.name }}</h5>
+                                  <p class="card-text"></p>
+                                  <a href="/game/{{ game.id }}" class="btn btn-primary">More</a>
+                                </div>
+                              </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
                       </div>
+                    </section>
+                </div>
+                {% endfor %}
+
+                <div class="tab-pane" id="edit">
+                    <form role="form">
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label form-control-label">First name</label>
+                            <div class="col-lg-9">
+                                <input class="form-control" type="text" value="Jane">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label form-control-label">Last name</label>
+                            <div class="col-lg-9">
+                                <input class="form-control" type="text" value="Bishop">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label form-control-label"></label>
+                            <div class="col-lg-9">
+                                <input type="reset" class="btn btn-secondary" value="Cancel">
+                                <input type="button" class="btn btn-primary" value="Save Changes">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="collections">
+                  <div class="container">
+                    <h2 class="display text-primary">My Collections</h2>
+                    <div class="row">
+                      {% for collection in current_user.collections %}
+                        <!-- Card -->
+                        <a href="{{ url_for('collection_details', username=current_user.username, collection=collection) }}">
+                        <div class="card">
+                          <div class="card-body d-flex flex-row">
+                            <div>
+                              <h4 class="card-title font-weight-bold mb-2">{{ current_user.collections[collection].name }}</h4>
+                              <p class="card-text"><i class="far fa-clock pr-2"></i>{{ current_user.collections[collection].date_created }}</p>
+                            </div>
+                          </div>
+
+                          <!-- Card image -->
+                          <div class="view overlay">
+                            <img class="card-img-top rounded-0" src="{{ current_user.collections[collection].imageURL }}" alt="Card image cap" width="250px" height="250px">
+                          </div>
+                        </div>
+                        </a>
+                        <!-- Card -->
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
-              </div>
+
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="dashboard-header section-padding">
-    <div class="container-fluid">
-      <div class="row d-flex align-items-md-stretch">
-
-        <div class="container">        
-          <h2 class="display h4">Saved Games</h2>
-          <div class="row">
-            {% for game in games %}
-            <div class="col-lg-4 card text-center">
-              <img class="card-img-top" width="100%" height="250px" src='{{ game.background_image }}'' alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{ game.name }}</h5>
-                <p class="card-text"></p>
-                <a href="/game/{{ game.id }}" class="btn btn-primary">More</a>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
+        <div class="col-lg-4 order-lg-1 text-center">
+            <img src="//placehold.it/150" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+            <h5 class="mb-3">Hi, {{ user.username }}</h5>
+            <small>{{ user.email }}</small>
         </div>
-      </div>
     </div>
-  </section>
-  
-  <section class="collections">
-    <div class="container">
-      <h2 class="display text-primary">My Collections</h2>
-      <div class="row">
-        {% for collection in current_user.collections %}
-          <!-- Card -->
-          <a href="{{ url_for('collection_details', username=current_user.username, collection=collection) }}">
-          <div class="card">
-            <div class="card-body d-flex flex-row">
-              <div>
-                <h4 class="card-title font-weight-bold mb-2">{{ current_user.collections[collection].name }}</h4>
-                <p class="card-text"><i class="far fa-clock pr-2"></i>{{ current_user.collections[collection].date_created }}</p>
-              </div>
-            </div>
+</div>
 
-            <!-- Card image -->
-            <div class="view overlay">
-              <img class="card-img-top rounded-0" src="{{ current_user.collections[collection].imageURL }}" alt="Card image cap" width="250px" height="250px">
-            </div>
-          </div>
-          </a>
-          <!-- Card -->
-        {% endfor %}
-      </div>
-    </div>
-  </section>
 {% endblock %}

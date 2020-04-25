@@ -9,6 +9,8 @@ $(document).ready(function() {
     collectionImg = $('#image')[0].value
     date_created = $('#date_created')[0].value
 
+    console.log(collectionName)
+
     await axios.post('/create-collection', { data: {
       'collection_name': collectionName,
       'collection_description': collectionDescription,

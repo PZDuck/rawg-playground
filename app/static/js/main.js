@@ -3,7 +3,7 @@
 	"use strict";	
 
     $(".owl-carousel").owlCarousel({
-      autoPlay: 5000, //Set AutoPlay to 3 seconds
+      autoPlay: 20000, //Set AutoPlay to 3 seconds
       items: 2,
       navigation: true,
       pagination: false,

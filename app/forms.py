@@ -16,10 +16,10 @@ class LoginForm(FlaskForm):
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=20)])
 
 class SearchForm(FlaskForm):
-    search = StringField('name', validators=[InputRequired()])
-    publishers = SelectField('publishers', choices=[('', '')], validators=[Optional()])
-    genres = SelectField('genres', choices=[('', '')], validators=[Optional()])
-    order_by = SelectField('order', choices=[('', ''), ('name', 'name'), ('-name', 'name (reversed)'), ('released', 'release date (asc)'), ('-released', 'release date (desc)'), ('rating', 'rating (asc)'), ('-rating', 'rating (desc)') ])
+    search = StringField('Search', validators=[InputRequired()])
+    publishers = SelectField('Publishers', choices=[('', '')], validators=[Optional()])
+    genres = SelectField('Genres', choices=[('', '')], validators=[Optional()])
+    order_by = SelectField('Order', choices=[('', ''), ('name', 'Alphabetic Order'), ('-name', 'Reversed Alphabetic Order'), ('released', 'Old'), ('-released', 'Recent'), ('rating', 'Least Rated'), ('-rating', 'Top Rated') ])
 
 class CreateCollectionForm(FlaskForm):
     name = StringField('name', validators=[InputRequired()])

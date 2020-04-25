@@ -34,17 +34,18 @@
       {% if current_user.is_anonymous %}
       <small>You need to be logged in to save games</small>
       {% else %}
-      <button id="{{ game.id }}" class="btn btn-game {% if game.id|string in session['saved_games'] %}btn-danger">Remove from games{% else %}btn-primary">Add to My Games{% endif %}</button>
-      <button id="{{ game.id }}" class="btn btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
+      <button id="btn-game" data-gameid="{{ game.id }}" class="btn {% if game.id|string in current_user.saved_games %}btn-danger" data-action="remove">Remove from games{% else %}btn-primary" data-toggle="modal" data-target="#add-game-modal">Add to My Games{% endif %}</button>
+      <button id="btn-collection" data-gameid="{{ game.id }}" class="btn btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
       {% endif %}
 
-      <!-- Modal -->
+      <!-- Add to Collection Modal -->
       <div class="modal fade" id="add-to-collection-modal" tabindex="-1" role="dialog" aria-labelledby="add-to-collection-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <img class="center-block" src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle img-responsive">
             </div>
+
             <div class="modal-body">
               <div class="md-form mb-5">
                 <select id="collection-name" class="form-control validate">
@@ -55,6 +56,7 @@
                 <label data-error="wrong" data-success="right" for="collection-name">Collection</label>
               </div>
             </div>
+
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button id="{{ game.id }}" type="button" class="btn btn-success add-to-collection">Add</button>
@@ -63,9 +65,32 @@
         </div>
       </div>
 
-    </div>
+      <!-- Add Game Modal -->
+      <div class="modal fade" id="add-game-modal" tabindex="-1" role="dialog" aria-labelledby="add-game-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
 
-  </div>
+            <div class="modal-body">
+              <div class="md-form mb-5">
+                <select id="status" class="form-control validate">
+                    <option value="wtp">Want to Play</option>
+                    <option value="cp">Currently Playing</option>
+                    <option value="finished">Finished Playing</option>
+                </select>
+                <label data-error="wrong" data-success="right" for="status">Mark As</label>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button data-gameid="{{ game.id }}" data-action="add" type="button" class="btn btn-success add-game">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>  
 
   <div class="col-md-12">
     <h3 class="my-3">Game Description</h3>
@@ -84,12 +109,12 @@
   <div class="games-container">
     <div class="container">
       <div class="inside light page-section text-center">
-        <div class="row">
-          <h2 class="display text-primary">You might also like</h2>
+        <div class="row justify-content-center">
+          <h2 class="display text-primary" style="padding: 3%;">You might also like</h2>
           <div class="owl-carousel">
             {% for game in suggested.results %}
             <a href="{{ url_for('game_details', game_id=game.id) }}">
-              <div class="card text-center owl-item">
+              <div class="card text-center">
                 <img class="card-img-top" src="{{ game.background_image }}" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">{{ game.name }}</h5>

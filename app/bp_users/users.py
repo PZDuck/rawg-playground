@@ -51,9 +51,12 @@ def logout():
 @app.route('/account')
 @login_required
 def account():
-    games = []
-    for game_id in list(current_user.saved_games.keys()):
-        games.append(requests.get(f'https://api.rawg.io/api/games/{game_id}').json())
+
+    games = {'wtp': [], 'cp': [], 'finished': []}
+    user_games = list(current_user.saved_games.keys())
+    for game in user_games:
+        games[current_user.saved_games[game]].append(requests.get(f'https://api.rawg.io/api/games/{game}').json())
+    print(games)
 
     form = CreateCollectionForm()
 
