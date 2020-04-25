@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <form method="POST" id="search-form">
+    {{ form.hidden_tag() }}
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      {% for error in field.errors %}
+      <span class="text-danger">{{ error }}</span>
+      {% endfor %}
+      {{ field(placeholder=field.label.text, class="form-control") }}
+    {% endfor %}
+
+    <button class="search btn btn-success">Search</button>
+  </form>
+</div>
+
+<div class="games container"></div>
+
+{% endblock %}

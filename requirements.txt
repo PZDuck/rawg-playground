@@ -1,0 +1,10 @@
+bcrypt
+Flask
+Flask-Bcrypt
+Flask-SQLAlchemy
+Flask-WTF
+Flask-PyMongo
+Flask-MongoEngine
+Flask-Login
+Werkzeug
+WTForms
