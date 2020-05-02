@@ -24,7 +24,9 @@ def index():
     genres = requests.get('https://api.rawg.io/api/genres', params={ 'ordering': '-games_count' }).json()
     form.genres.choices += [(i['id'], i['name']) for i in genres['results']]
 
-    return render_template('index.html', games=games, form=form)
+    public_collection = Collection.objects(is_private=False).all()
+
+    return render_template('index.html', games=games, form=form, collections=public_collection)
 
 # Contact Us Page
 @app.route('/contact')
@@ -64,7 +66,7 @@ def collection_details(username, collection):
     games = []
     for game_id in collection['games']:
         games.append(requests.get(f'https://api.rawg.io/api/games/{game_id}').json())
-    return render_template('collection.html', collection=collection, games=games)
+    return render_template('collection.html', collection=collection, games=games, user=user)
 
 
 '''
@@ -107,7 +109,7 @@ def create_collection():
     
     user = User.objects(email=current_user.email).first()
     user.create_collection(collection['collection_name'], collection['collection_description'], collection['collection_image'], collection['date_created'])
-    Collection.create_collection(user['email'], collection['collection_name'], collection['collection_description'], collection['collection_image'])
+    Collection.create_collection(user['email'], current_user['username'], collection['collection_name'], collection['collection_description'], collection['collection_image'])
  
     return "OK", 200
 

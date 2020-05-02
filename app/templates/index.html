@@ -16,7 +16,7 @@
       <h4><a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Sign Up</a> to start creating your own collections 
       or use search bar below to search for games of your preference.</h4>
       {% else %}
-      <h4><a href="{{ url_for('account') }}">Start creating your own game collections</a> or search for any game of your preference</h4>
+      <h4><a href="{{ url_for('account', username=current_user.username) }}">Start creating your own game collections</a> or search for any game of your preference</h4>
       {% endif %}
 
 	<div class="row search-bar">
@@ -92,78 +92,77 @@
 {% block content %}
 
 <div class="main-content">
+
 <section id="posts" class="page-section">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-xs-8 col-xs-offset-2 align-self-center">
-        <h2>Explore your favorite games in one place</h2>
+        <p class="display-4">Explore your favorite games in one place</p>
         <span class="underline"></span>
       </div>
     </div>
-
-    <!-- <div class="row">
-      <div class="col-md-3 col-sm-6">
-
-        <div class="post-inside">
-          <div class="post-thumb">
-            <img src="" alt="">
-           </div>
-           <div class="post-content">
-              <h5>Lorem Ipsum</h5>
-              <p>Nullam bibendum lacus tellus, sit amet suscipit ligula laoreet vitae. Sed est neque, mollis vel tincidunt.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-inside">
-          <div class="post-thumb">
-            <img src="" alt="">
-           </div>
-           <div class="post-content">
-              <h5>Lorem Ipsum</h5>
-              <p>Nullam bibendum lacus tellus, sit amet suscipit ligula laoreet vitae. Sed est neque, mollis vel tincidunt.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-inside">
-          <div class="post-thumb">
-            <img src="" alt="">
-           </div>
-           <div class="post-content">
-              <h5>Lorem Ipsum</h5>
-              <p>Nullam bibendum lacus tellus, sit amet suscipit ligula laoreet vitae. Sed est neque, mollis vel tincidunt.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="post-inside">
-          <div class="post-thumb">
-            <img src="" alt="">
-           </div>
-           <div class="post-content">
-              <h5>Lorem Ipsum</h5>
-              <p>Nullam bibendum lacus tellus, sit amet suscipit ligula laoreet vitae. Sed est neque, mollis vel tincidunt.</p>
-            </div>
-          </div>
-        </div>
-      </div> 
-    </div> -->
-
   </div>
 </section>
+
+<div class="features container">
+  <div class="row text-center">
+    <div class="col-md-6 col-sm-6">
+      <div class="feature-box style-2">
+        <div class="feature-media">
+          <img src="https://img.icons8.com/pastel-glyph/128/000000/search--v2.png"/>
+        </div>
+
+        <div class="feature-body">
+            <div class="custom-heading style-1">
+                <a href="{{ url_for('search') }}">
+                    <h2>Start Browsing</h2>
+                </a>
+            </div>
+            <p class="feature-desc">
+                Save and keep track of the games you wish to play, are currently playing,
+                or finished playing
+            </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6 col-sm-6">
+      <div class="feature-box style-2">
+        <div class="feature-media">
+          <img src="https://img.icons8.com/cotton/128/000000/folder-invoices--v1.png"/>
+        </div>
+
+        <div class="feature-body">
+            <div class="custom-heading style-1">
+                <a href="{{ url_for('account', username=current_user.username) }}">
+                    <h2>Explore Collections</h2>
+                </a>
+            </div>
+            <p class="feature-desc">
+                Combine the games in collections to categorize them for
+                yourself or share them with others
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="games-container">
   <div class="container">
     <div class="inside light page-section text-center">
-      <div class="row">
+      <div class="row justify-content-center">
+        <div class="carousel-title">
+          <p class="display-4">Public Collections</p>
+        </div>
         <div class="owl-carousel">
-          {% for game in games %}
-          <a href="{{ url_for('game_details', game_id=game.id) }}">
+          {% for collection in collections %}
+          <a href="{{ url_for('collection_details', username=collection.username, collection=collection.slug) }}">
             <div class="card text-center">
-              <img class="card-img-top" src="{{ game.background_image }}" alt="Card image cap">
+              <img class="card-img-top" src="{{ collection.image }}" alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title">{{ game.name }}</h5>
+                <h5 class="card-title">{{ collection.name }}</h5>
+                <small>By {{ collection.username }}</small>
               </div>
             </div>
           </a>
@@ -174,5 +173,7 @@
     </div>
   </div>
 </div>
+
+
 </div>
 {% endblock %}

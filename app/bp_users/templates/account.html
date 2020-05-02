@@ -7,256 +7,164 @@
 {% block content %}
 
 <div class="container">
-    <div class="row my-2 account-container">
-        <div class="col-lg-8 order-lg-2">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" data-target="#wtp" data-toggle="tab" class="nav-link">Want to Play</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" data-target="#cp" data-toggle="tab" class="nav-link">Currently Playing</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" data-target="#finished" data-toggle="tab" class="nav-link">Finished</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" data-target="#collections" data-toggle="tab" class="nav-link">Collections</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
-                </li>
-            </ul>
-            <div class="tab-content py-4">
-                <div class="tab-pane active" id="profile">
-                    <div class="row justify-content-between jumbotron">
+  <div class="row my-2 account-container">
+    <div class="col-lg-8 order-lg-2">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#wtp" data-toggle="tab" class="nav-link">Want to Play</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#cp" data-toggle="tab" class="nav-link">Currently Playing</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#finished" data-toggle="tab" class="nav-link">Finished</a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#collections" data-toggle="tab" class="nav-link">Collections</a>
+        </li>
+      </ul>
 
-                        <div class="col-xl-3 col-md-4 col-6">
-                            <div class="wrapper count-title d-flex">
-                              <div class="icon"><i class="icon-padnote"></i></div>
-                              <div class="name text-center"><strong class="text-uppercase">Want to Play</strong>
-                                <div class="count-number">{{ games['wtp']|length }}</div>
-                              </div>
-                            </div>
-                          </div>
-                      
-                          <div class="col-xl-3 col-md-4 col-6">
-                            <div class="wrapper count-title d-flex">
-                              <div class="icon"><i class="icon-padnote"></i></div>
-                              <div class="name text-center"><strong class="text-uppercase">Currently Playing</strong>
-                                <div class="count-number">{{ games['cp']|length }}</div>
-                              </div>
-                            </div>
-                          </div>
+      <div class="tab-content py-4">
+        <div class="tab-pane active" id="profile">
+          <div class="row justify-content-between jumbotron">
 
-                          <div class="col-xl-3 col-md-4 col-6">
-                            <div class="wrapper count-title d-flex">
-                              <div class="icon"><i class="icon-padnote"></i></div>
-                              <div class="name text-center"><strong class="text-uppercase">Finished Playing</strong>
-                                <div class="count-number">{{ games['finished']|length }}</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                    <!--/row-->
-
-                        <div class="user-info row">
-                            <div class="col-md-4">
-                                <h4>Username</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h4>{{ current_user.username }}</h4>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>Real Name</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h4>{{ current_user.name }}</h4>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>Email</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h4>{{ current_user.email }}</h4>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>City</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h4>{{ current_user.city }}</h4>
-                            </div>
-                        </div>
+            <div class="col-xl-3 col-md-4 col-6">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-padnote"></i></div>
+                <div class="name text-center"><strong class="text-uppercase">Want to Play</strong>
+                  <div class="count-number">{{ games['wtp']|length }}</div>
                 </div>
-
-                {% for status in games %}
-                <div class="tab-pane" id="{{ status }}">
-                  <section class="dashboard-header section-padding">
-                      <div class="container-fluid">
-                        <div class="row d-flex align-items-md-stretch">
-
-                          <div class="container">        
-                            <div class="row justify-content-center">
-                              {% for game in games[status] %}
-                              <div class="col-lg-4 card text-center account-card">
-                                <img class="card-img-top" src='{{ game.background_image }}'' alt="Card image cap">
-                                <div class="card-body">
-                                  <h5 class="card-title">{{ game.name }}</h5>
-                                  <p class="card-text"></p>
-                                  <a href="/game/{{ game.id }}" class="btn btn-primary">More</a>
-                                </div>
-                              </div>
-                              {% endfor %}
-
-                              {% if not games[status] %}
-                              <h3 class="justify-content-center">There are no games in this section yet</h3>
-                              {% endif %}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                </div>
-                {% endfor %}
-
-                <div class="tab-pane form-container" id="edit">
-                <form method="POST" id="update-profile-form">
-
-                  {{ profile_form.hidden_tag() }}
-
-                  <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        </div>      
-                        {{ profile_form.username(class="form-control", placeholder="Username") }}
-                        {% for error in profile_form.username.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                        {% endfor %}
-                    </div> <!-- form-group// -->
-
-                  <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        </div>      
-                        {{ profile_form.name(class="form-control", placeholder="Real Name") }}
-                        {% for error in profile_form.name.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                        {% endfor %}
-                    </div> <!-- form-group// -->
-
-                  <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        </div>      
-                        {{ profile_form.city(class="form-control", placeholder="City") }}
-                        {% for error in profile_form.city.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                        {% endfor %}
-                    </div> <!-- form-group// -->
-
-                  <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        </div>      
-                        {{ profile_form.avatar_url(class="form-control", placeholder="Avatar URL") }}
-                        {% for error in profile_form.avatar_url.errors %}
-                            <span class="text-danger">{{ error }}</span>
-                        {% endfor %}
-                    </div> <!-- form-group// -->
-
-                  <div class="form-group">
-                      <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-                  </div> <!-- form-group// -->   
-              </form>
               </div>
-
-                <div class="tab-pane" id="collections">
-                  <div class="container">
-
-                  <div class="collections-head row">
-                    <h2 class="display text-primary text-center">My Collections</h2>
-                    
-                    <!-- Button trigger modal -->
-                    <button type="submit" class="btn btn-outline-primary" data-toggle="modal" data-target="#createCollectionModal">
-                      Create Collection
-                    </button>
-                    </div>
-
-                    <!-- Modal -->
-                      <div class="modal fade" id="createCollectionModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <form method="POST" id="create-collection-form">
-                                  {{ collection_form.hidden_tag() }}
-
-                                  {% for field in collection_form if field.widget.input_type != 'hidden' %}
-                                      {% for error in field.errors %}
-                                          <span class="text-danger">{{ error }}</span>
-                                      {% endfor %}
-                                      {{ field(placeholder=field.label.text, class="form-control") }}
-                                  {% endfor %}
-
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-success create-collection">Create</button>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    <!-- End Modal -->
-
-                    <div class="row collections">
-                      {% for collection in current_user.collections %}
-                        <!-- Card -->
-
-                      <a href="{{ url_for('collection_details', username=current_user.username, collection=collection) }}">
-
-
-                      <div class="card bg-light mb-3" style="max-width: 18rem;">
-                        <div class="card-header">
-                          <img class="card-img-top rounded-0" src="{{ current_user.collections[collection].imageURL }}" alt="Card image cap">
-                        </div>
-                        <div class="card-body">
-                          <h5 class="card-title">{{ current_user.collections[collection].name }}</h5>
-                          {% if current_user.collections[collection].is_private %}
-                          <span class="badge badge-primary">Private</span>
-                          {% else %}
-                          <span class="badge badge-secondary">Public</span>
-                          {% endif %}
-                          <p class="card-text">{{ current_user.collections[collection].date_created }}</p>
-
-                          <button id="delete-collection" data-collection="{{ collection }}" type="button" class="btn btn-outline-danger btn-sm">Delete</button>
-                          {% if current_user.collections[collection].is_private %}
-                          <button id="toggle-public" data-collection="{{ collection }}" type="button" class="btn btn-outline-warning btn-sm">Unmark private</button>
-                          {% else %}
-                          <button id="toggle-private" data-collection="{{ collection }}" type="button" class="btn btn-outline-info btn-sm">Mark private</button>
-                          {% endif %}
-                        </div>
-                      </div>
-
-                      </a>
-
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-
             </div>
-        </div>
-        <div class="profile-display col-lg-4 order-lg-1 text-center">
-            <img src="{{ current_user.avatar_url }}" class="mx-auto img-fluid img-circle d-block" alt="avatar">
-            <h4 class="mb-3 display" style="margin: 5px;">Hi, {{ user.username }}</h5>
+                      
+            <div class="col-xl-3 col-md-4 col-6">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-padnote"></i></div>
+                <div class="name text-center"><strong class="text-uppercase">Currently Playing</strong>
+                  <div class="count-number">{{ games['cp']|length }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-padnote"></i></div>
+                <div class="name text-center"><strong class="text-uppercase">Finished Playing</strong>
+                  <div class="count-number">{{ games['finished']|length }}</div>
+                </div>
+              </div>
+            </div>
+          
+          </div><!--/row-->
+
+        <div class="user-info">
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Username</h4>
+            </div>
+            <div class="col-md-4">
+                <h4>{{ user.username }}</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Real Name</h4>
+            </div>
+            <div class="col-md-4">
+              <h4>{{ user.name }}</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Email</h4>
+            </div>
+            <div class="col-md-4">
+              <h4>{{ user.email }}</h4>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>City</h4>
+            </div>
+            <div class="col-md-4">
+              <h4>{{ user.city }}</h4>
+            </div>
+          </div>
         </div>
     </div>
+
+        {% for status in games %}
+        <div class="tab-pane" id="{{ status }}">
+          <section class="dashboard-header section-padding">
+            <div class="container-fluid">
+              <div class="row d-flex align-items-md-stretch">
+
+                <div class="container">        
+                  <div class="row justify-content-center">
+                  {% for game in games[status] %}
+                    <div class="col-lg-4 card text-center account-card">
+                      <img class="card-img-top" src='{{ game.background_image }}'' alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ game.name }}</h5>
+                        <p class="card-text"></p>
+                        <a href="/game/{{ game.id }}" class="btn btn-primary">More</a>
+                      </div>
+                    </div>
+                  {% endfor %}
+
+                  {% if not games[status] %}
+                    <h3 class="justify-content-center">There are no games in this section yet</h3>
+                  {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        {% endfor %}
+
+        <div class="tab-pane" id="collections">
+          <div class="container">
+            <div class="collections-head row">
+              <h2 class="display text-primary text-center">Collections</h2>        
+              <div class="row collections">
+                {% for collection in collections %}
+                <!-- Card -->
+                  <a href="{{ url_for('collection_details', username=user.username, collection=collection.slug) }}">
+                    <div class="card bg-light mb-3" style="max-width: 18rem;">
+                      <div class="card-header">
+                        <img class="card-img-top rounded-0" src="{{ collection.image }}" alt="Card image cap">
+                      </div>
+                      <div class="card-body">
+                        <h5 class="card-title">{{ collection.name }}</h5>
+                        {% if collection.is_private %}
+                        <span class="badge badge-primary">Private</span>
+                        {% else %}
+                        <span class="badge badge-secondary">Public</span>
+                        {% endif %}
+                        <p class="card-text">{{ collection.date_created }}</p>
+                      </div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-display col-lg-4 order-lg-1 text-center">
+    <img src="{{ user.avatar_url }}" class="mx-auto img-fluid img-circle d-block" alt="avatar">
+  </div>
+</div>
 </div>
 
 {% endblock %}

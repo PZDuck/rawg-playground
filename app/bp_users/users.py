@@ -1,7 +1,7 @@
 from flask_login import  login_user, login_required, logout_user, current_user
 from flask import Flask, render_template, request, url_for, Blueprint, session, redirect, jsonify
 from app.forms import RegForm, LoginForm, CreateCollectionForm, EditProfileForm
-from app.db_collections import load_user, User
+from app.db_collections import load_user, User, Collection
 from app import app
 
 import requests
@@ -48,24 +48,38 @@ def logout():
 
 
 # User account page
-@app.route('/account', methods=['GET', 'POST'])
+@app.route('/account/<username>', methods=['GET', 'POST'])
 @login_required
-def account():
+def account(username):
 
-    games = {'wtp': [], 'cp': [], 'finished': []}
-    user_games = list(current_user.saved_games.keys())
-    for game in user_games:
-        games[current_user.saved_games[game]].append(requests.get(f'https://api.rawg.io/api/games/{game}').json())
+    if current_user.username == username:
+        games = {'wtp': [], 'cp': [], 'finished': []}
+        user_games = list(current_user.saved_games.keys())
+        for game in user_games:
+            games[current_user.saved_games[game]].append(requests.get(f'https://api.rawg.io/api/games/{game}').json())
 
 
-    collection_form = CreateCollectionForm(obj=current_user)
-    profile_form = EditProfileForm(obj=current_user)
+        collection_form = CreateCollectionForm(obj=current_user)
+        profile_form = EditProfileForm(obj=current_user)
 
-    if request.method == 'POST':
+        if request.method == 'POST':
 
-        if profile_form.validate_on_submit():
-            current_user.update_profile(profile_form.data['name'], profile_form.data['city'], profile_form.data['avatar_url'])
-            return render_template('account.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+            if profile_form.validate_on_submit():
+                current_user.update_profile(profile_form.data['name'], profile_form.data['city'], profile_form.data['avatar_url'])
+                return render_template('account_own.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+    
+        return render_template('account_own.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+    
+    else:
+        user = User.objects(username=username).first()
 
-    return render_template('account.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+        games = {'wtp': [], 'cp': [], 'finished': []}
+        user_games = list(user.saved_games.keys())
+        for game in user_games:
+            games[user.saved_games[game]].append(requests.get(f'https://api.rawg.io/api/games/{game}').json())
+        
+        public_collections = Collection.objects(username=username, is_private=False).all()
+
+        return render_template('account.html', user=user, games=games, collections=public_collections)
+
 

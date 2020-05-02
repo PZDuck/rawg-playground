@@ -19,6 +19,8 @@ def slugify(name):
 
 class Collection(db.DynamicDocument):
     meta = {'collection': 'collections'}
+    slug = db.StringField()
+    username = db.StringField()
     user_email = db.StringField(max_length=64)
     name = db.StringField()
     games = db.ListField()
@@ -28,19 +30,21 @@ class Collection(db.DynamicDocument):
     is_private = db.BooleanField(default=False)
 
     @classmethod
-    def create_collection(cls, user_email, name, description, image='https://avatars.mds.yandex.net/get-pdb/1935444/fab3d347-96a8-4538-94f9-138ba41df623/s1200?webp=false'):
-        collection = cls(user_email=user_email, name=name, description=description, image=image).save()
+    def create_collection(cls, user_email, username, name, description, image):
+        if not image:
+            image = 'https://avatars.mds.yandex.net/get-pdb/1935444/fab3d347-96a8-4538-94f9-138ba41df623/s1200?webp=false'
+        collection = cls(slug=slugify(name), user_email=user_email, username=username, name=name, description=description, image=image).save()
         return collection
 
     @classmethod
     def delete_collection(cls, user_email, name):
-        collection = cls.objects(user_email=user_email, name=name).first()
+        collection = cls.objects(user_email=user_email, slug=slugify(name)).first()
         collection.delete()
         return
 
     @classmethod
     def toggle_private(cls, name):
-        collection = cls.objects(name=slugify(name)).first()
+        collection = cls.objects(slug=slugify(name)).first()
         collection.is_private = True if collection.is_private == False else False
         collection.save()
         return collection
@@ -60,7 +64,7 @@ class User(UserMixin, db.DynamicDocument):
     date_registered = db.DateTimeField(default=datetime.datetime.utcnow())
     real_name = db.StringField()
     city = db.StringField()
-    avatar_url = db.URLField()
+    avatar_url = db.URLField(default='https://irac.me/wp-content/uploads/2017/08/irac-user-gravatar-blue-e1503260290469.png')
     collections = db.DictField()
     saved_games = db.DictField()
     is_private = db.BooleanField(default=False)

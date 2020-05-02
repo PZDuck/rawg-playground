@@ -587,7 +587,7 @@ html {
 
 .owl-item {
   padding: 15px;
-  max-width: 500px;
+  width: 420px !important; 
 }
 
 .owl-item img, .screenshot img {
@@ -736,4 +736,35 @@ border-bottom-left-radius: 4px;
 
 .collections-head button {
   margin: 5% 0;
+}
+
+.features {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.feature-desc {
+  font-size: 16px;
+  margin: 5% 0;
+}
+
+.item blockquote {
+  border-left: none; 
+  margin: 0;
+}
+
+.item blockquote img {
+  margin-bottom: 10px;
+}
+
+.item blockquote p:before {
+  content: "\f10d";
+  font-family: 'Fontawesome';
+  float: left;
+  margin-right: 10px;
+}
+
+.carousel-title, .user-info {
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
