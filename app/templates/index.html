@@ -1,18 +1,87 @@
 {% extends 'base.html' %}
 
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+<script>
+</script>
+{% endblock %}
+
 {% block welcome_text %}
 
 <div class="welcome-text">
   <div class="container text-center white-text">
     <div class="col-xs-8 col-xs-offset-2">
-      <h1>Welcome to *name*</h1>
-      <h4>*website description*</h4>
+      <h1>Welcome to RAWG Playground</h1>
       {% if current_user.is_anonymous %}
-      <a href="{{ url_for('login') }}" class="button outline white">Login</a>
-      <a href="{{ url_for('register') }}" class="button default">Sign Up</a>
+      <h4><a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Sign Up</a> to start creating your own collections 
+      or use search bar below to search for games of your preference.</h4>
       {% else %}
-      <a href="{{ url_for('search') }}" class="button default">Search</a>
+      <h4><a href="{{ url_for('account') }}">Start creating your own game collections</a> or search for any game of your preference</h4>
       {% endif %}
+
+	<div class="row search-bar">
+		<div class="col-md-12">
+
+      <form method="POST" action="{{ url_for('search') }}" id="index-search-form">
+        <div class="input-group" id="adv-search">
+            <div style="flex: auto;">
+              {{ form.search(placeholder=form.search.label.text, class="form-control") }}
+              {% if form.search.errors %}
+              <ul class="errors">
+                {% for error in form.search.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+
+          <div class="input-group-btn">
+            <div class="btn-group" role="group">
+              <div class="dropdown dropdown-lg">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+
+                    <div class="form-group">{{ form.publishers.label }} {{ form.publishers(class="form-control custom-select") }}
+                      {% if form.publishers.errors %}
+                      <ul class="errors">
+                        {% for error in form.publishers.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group">{{ form.genres.label }} {{ form.genres(class="form-control custom-select") }}
+                      {% if form.genres.errors %}
+                      <ul class="errors">
+                        {% for error in form.genres.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group">{{ form.order_by.label }} {{ form.order_by(class="form-control custom-select") }}
+                      {% if form.order_by.errors %}
+                      <ul class="errors">
+                        {% for error in form.order_by.errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <button class="btn button default">Search</button>
+        </form>
+      </div>
+	  </div>
+  </div>
     </div>
   </div>
 </div>
@@ -22,6 +91,7 @@
 
 {% block content %}
 
+<div class="main-content">
 <section id="posts" class="page-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -104,5 +174,5 @@
     </div>
   </div>
 </div>
-
+</div>
 {% endblock %}

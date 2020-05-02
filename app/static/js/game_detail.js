@@ -26,8 +26,9 @@ $(document).ready(function() {
 
   // Add selected game to user's collection of their choice
   $('.add-to-collection').on('click', async function(event) {
+    console.log(event.target.dataset.gameid)
     await axios.post('/add-to-collection', { data: {
-      'game_id': event.target.dataset.gameid,
+      'game_id': event.target.id,
       'collection_name': $('#collection-name')[0].value
       }
     })

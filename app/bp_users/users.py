@@ -1,6 +1,6 @@
 from flask_login import  login_user, login_required, logout_user, current_user
-from flask import Flask, render_template, request, url_for, Blueprint, session
-from app.forms import RegForm, LoginForm, CreateCollectionForm
+from flask import Flask, render_template, request, url_for, Blueprint, session, redirect, jsonify
+from app.forms import RegForm, LoginForm, CreateCollectionForm, EditProfileForm
 from app.db_collections import load_user, User
 from app import app
 
@@ -14,7 +14,7 @@ bp_users = Blueprint('users', __name__, template_folder='templates', static_fold
 def register():
     form = RegForm()
     if request.method == 'POST':
-        if form.validate():
+        if form.validate_on_submit():
             user = User.objects(email=form.email.data).first()
             if not user:
                 new_user = User.register(email=form.email.data, password=form.password.data, username=form.username.data)
@@ -30,7 +30,7 @@ def login():
     
     form = LoginForm()
     if request.method == 'POST':
-        if form.validate():
+        if form.validate_on_submit():
             user = User.authenticate(email=form.email.data, password=form.password.data)
             if user:
                 login_user(user)
@@ -48,7 +48,7 @@ def logout():
 
 
 # User account page
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
 
@@ -56,8 +56,16 @@ def account():
     user_games = list(current_user.saved_games.keys())
     for game in user_games:
         games[current_user.saved_games[game]].append(requests.get(f'https://api.rawg.io/api/games/{game}').json())
-    print(games)
 
-    form = CreateCollectionForm()
 
-    return render_template('account.html', user=current_user, games=games, form=form)
+    collection_form = CreateCollectionForm(obj=current_user)
+    profile_form = EditProfileForm(obj=current_user)
+
+    if request.method == 'POST':
+
+        if profile_form.validate_on_submit():
+            current_user.update_profile(profile_form.data['name'], profile_form.data['city'], profile_form.data['avatar_url'])
+            return render_template('account.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+
+    return render_template('account.html', user=current_user, games=games, collection_form=collection_form, profile_form=profile_form)
+

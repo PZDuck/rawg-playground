@@ -471,9 +471,9 @@ span.underline {
 
 /*------ projects ------ */
 #posts {
-  padding-top: 50px;
-  margin-bottom: 100px;
+  padding-top: 100px;
 }
+
 #posts h4 {
   margin-bottom: 60px;
   line-height: 26px;
@@ -507,69 +507,6 @@ span.underline {
   width: 100%;
 }
 
-/*------ call to action ------ */
-#cta {
-  margin-bottom: 80px;
-}
-#cta .page-section {
-  padding-top: 60px;
-}
-#cta h2 {
-  color: white;
-  margin-bottom: 30px;
-}
-#cta h4 {
-  color: white;
-  margin-bottom: 30px;
-}
-#cta #cta-email {
-  display: inline-block;
-  height: 38px;
-  background: #9cd5fa;
-  outline: 0;
-  border: 0;
-  padding: 0 10px;
-  width: 100%;
-  color: white;
-}
-#cta #cta-email::-webkit-input-placeholder {
-  color: #fff;
-}
-#cta #cta-email:-moz-placeholder {
-  /* Firefox 18- */
-  color: #fff;
-}
-#cta #cta-email::-moz-placeholder {
-  /* Firefox 19+ */
-  color: #fff;
-}
-#cta #cta-email:-ms-input-placeholder {
-  color: #fff;
-}
-@media screen and (max-width: 992px) {
-  #cta #cta-email {
-    margin-bottom: 20px;
-  }
-}
-#cta #cta-submit {
-  display: inline-block;
-  background: transparent;
-  outline: 0;
-}
-
-.cta-form {
-  padding-bottom: 60px;
-}
-
-.inside.accent {
-  background: #6cc0f7;
-}
-@media screen and (max-width: 992px) {
-  .inside.accent {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-}
 
 /*------ contact ------ */
 .contact-form input, .contact-form textarea {
@@ -588,8 +525,21 @@ span.underline {
 /*---------------------------------------------------------
  5. Footer
 -------------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.main-content {
+  margin-bottom: 12%;
+}
+
 .site-footer {
-  padding: 20px 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background: #e9e9e9;
   border-top: 4px solid gainsboro;
 }
@@ -615,13 +565,24 @@ span.underline {
 }
 
 .card {
-  margin: 3%;
+  width: 550px;
+  height: auto;
+  overflow: hidden;
+  padding: 5%;
+  margin: 3% 0;
 }
 
 .owl-item .card {
-  width: auto;
-  padding: 5%;
+  width: 350px;
+  height: 350px;
+  overflow: hidden;
+  padding-top: 5%;
   margin: 3% 0;
+}
+
+.card img {
+  height: 250px;
+  width: 400px;
 }
 
 .owl-item {
@@ -632,11 +593,10 @@ span.underline {
 .owl-item img, .screenshot img {
   min-height: 25%;
   width: 100%;
-  object-fit: contain;
 }
 
 .games-container {
-  margin: 5% 0;
+  margin-bottom: 175px;
 }
 
 .search {
@@ -650,7 +610,7 @@ span.underline {
 }
 
 .next-prev {
-  margin: 5%;
+  margin-bottom: 10%;
 }
 
 .next-prev button {
@@ -690,7 +650,7 @@ border-bottom-left-radius: 4px;
   #adv-search {
       align-items: center;
       width: 500px;
-      margin: 0 auto;
+      margin: 25px auto;
   }
   .dropdown.dropdown-lg {
       position: static !important;
@@ -698,4 +658,82 @@ border-bottom-left-radius: 4px;
   .dropdown.dropdown-lg .dropdown-menu {
       min-width: 500px;
   }
+}
+
+
+#search {
+  border-radius: 0;
+}
+
+.more {
+  margin: 15px;
+}
+
+.profile-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-display img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 5%;
+}
+
+.account-card {
+  padding: 0 15px;
+}
+
+.account-card img {
+  width: 100%;
+  height: 50%;
+  margin-top: 5%;
+}
+
+.card-header img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.account-container {
+  margin-bottom: 10% !important;
+}
+
+.collections {
+  justify-content: space-around;
+}
+
+.form-container {
+  max-width: 800px;
+  margin-top: 5%;
+}
+
+.collection-container {
+  margin-bottom: 175px;
+  margin-top: 50px;
+}
+
+.collection-container .card {
+  padding: 0;
+}
+
+.collection-container .card img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.profile-head {
+  flex-direction: column;
+}
+
+.collections-head {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.collections-head button {
+  margin: 5% 0;
 }

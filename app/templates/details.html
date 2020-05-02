@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container detail-container">
 
   <h1 class="my-4">{{ game.name }}</h1>
   <div class="row">
@@ -35,7 +35,7 @@
       <small>You need to be logged in to save games</small>
       {% else %}
       <button id="btn-game" data-gameid="{{ game.id }}" class="btn {% if game.id|string in current_user.saved_games %}btn-danger" data-action="remove">Remove from games{% else %}btn-primary" data-toggle="modal" data-target="#add-game-modal">Add to My Games{% endif %}</button>
-      <button id="btn-collection" data-gameid="{{ game.id }}" class="btn btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
+      <button id="btn-collection" class="btn btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
       {% endif %}
 
       <!-- Add to Collection Modal -->
@@ -92,9 +92,9 @@
     </div>
   </div>  
 
-  <div class="col-md-12">
+  <div class="col-md-12" style="padding: 0 !important; margin: 5% 0;">
     <h3 class="my-3">Game Description</h3>
-    {{ game.description|safe }}
+    {{ game.description_raw|safe }}
   </div>
 
   <div class="row">

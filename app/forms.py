@@ -7,22 +7,28 @@ import datetime
 
 
 class RegForm(FlaskForm):
-    username = StringField('username', validators=[InputRequired(), Length(max=64)])
-    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=20)])
+    username = StringField('Username', validators=[InputRequired(), Length(max=64)])
+    email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=20)])
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64)])
-    password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=20)])
+    email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64)])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=20)])
 
 class SearchForm(FlaskForm):
-    search = StringField('Search', validators=[InputRequired()])
+    search = StringField('Search', validators=[Optional()])
     publishers = SelectField('Publishers', choices=[('', '')], validators=[Optional()])
     genres = SelectField('Genres', choices=[('', '')], validators=[Optional()])
     order_by = SelectField('Order', choices=[('', ''), ('name', 'Alphabetic Order'), ('-name', 'Reversed Alphabetic Order'), ('released', 'Old'), ('-released', 'Recent'), ('rating', 'Least Rated'), ('-rating', 'Top Rated') ])
 
 class CreateCollectionForm(FlaskForm):
-    name = StringField('name', validators=[InputRequired()])
-    description = TextAreaField('description', validators=[Optional()])
-    image = URLField('image', validators=[Optional()])
+    collection_name = StringField('Name', validators=[InputRequired()])
+    description = TextAreaField('Description', validators=[Optional()])
+    image = URLField('Image', validators=[Optional()])
     date_created = DateField(format='%Y-%m-%d', default=datetime.date.today(), render_kw={'disabled':''})
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[Optional()])
+    name = StringField('Real Name', validators=[Optional()])
+    city = StringField('City', validators=[Optional()])
+    avatar_url = URLField('Avatar', validators=[Optional()])
