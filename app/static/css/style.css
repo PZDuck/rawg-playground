@@ -768,3 +768,13 @@ border-bottom-left-radius: 4px;
   margin-top: 5%;
   margin-bottom: 5%;
 }
+
+.form-group {
+  margin-top: 1rem;
+}
+
+#search-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

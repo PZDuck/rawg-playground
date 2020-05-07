@@ -165,6 +165,36 @@ $(document).ready(function() {
       createButtons()
 
     })()
+  } 
+  
+  // "Deep linking" implementation
+  else if (window.location.search) {
+    (async () => {
+      let $gamesContainer = $('.games')
+      $gamesContainer.empty()
+      
+      let data = new URLSearchParams(window.location.search)
+      sessionStorage['search'] = window.location.search.slice(1)
+
+      let params = {}
+
+      for (const entry of data.entries()) {
+        params[entry[0]] = entry[1]
+      }
+
+
+      let games = await axios.post(`/get-games`, { data: {
+        'url': `${baseURL}?${sessionStorage['search']}`,
+        'params': params       
+      }})
+
+      window.history.replaceState({}, '', `${location.pathname}?${sessionStorage['search']}`)
+
+      createCards($gamesContainer, games)
+      populateURLs(games)
+      createButtons()
+
+    })() 
   }
 
   // Prevent the dropdown form from closing on click

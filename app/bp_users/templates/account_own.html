@@ -131,7 +131,7 @@
                 {% endfor %}
 
                 <div class="tab-pane form-container" id="edit">
-                <form method="POST" id="update-profile-form">
+                <form method="POST" id="update-profile-form" enctype="multipart/form-data">
 
                   {{ profile_form.hidden_tag() }}
 
@@ -165,8 +165,8 @@
                   <div class="form-group input-group">
                     <div class="input-group-prepend">
                         </div>      
-                        {{ profile_form.avatar_url(class="form-control", placeholder="Avatar URL") }}
-                        {% for error in profile_form.avatar_url.errors %}
+                        {{ profile_form.avatar(class="form-control", placeholder="Avatar URL") }}
+                        {% for error in profile_form.avatar.errors %}
                             <span class="text-danger">{{ error }}</span>
                         {% endfor %}
                     </div> <!-- form-group// -->
@@ -220,7 +220,6 @@
                         <!-- Card -->
 
                       <a href="{{ url_for('collection_details', username=current_user.username, collection=collection) }}">
-
 
                       <div class="card bg-light mb-3" style="max-width: 18rem;">
                         <div class="card-header">

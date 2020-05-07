@@ -2,6 +2,7 @@ $(document).ready(function() {
 
   // Get data from form and create a new collection
   $('.create-collection').on('click', async function(event) {
+    event.preventDefault()
     await axios.post('/create-collection', { data: {
       'collection_name': $('#collection_name')[0].value,
       'collection_description': $('#description')[0].value,
@@ -10,6 +11,8 @@ $(document).ready(function() {
       }
     })  
     $('#createCollectionModal').modal('hide')
+
+    location.reload()
   })
 
   $('.collections button').on('click', async function(event) {
@@ -17,7 +20,7 @@ $(document).ready(function() {
 
     if (event.target.id === 'delete-collection') {
       await axios.post('/delete-collection', { data: { 
-        'collection': $('#delete-collection')[0].dataset.collection
+        'collection': $(this)[0].dataset.collection
         }
       })
       event.target.closest('a').remove()    

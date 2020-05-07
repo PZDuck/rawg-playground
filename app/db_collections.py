@@ -11,11 +11,12 @@ bcrypt = Bcrypt()
 def load_user(user_id):
     return User.objects(pk=user_id).first()
 
-    
+
 # UTIL FUNC
 def slugify(name):
     name = name.lower().replace(' ', '-')
     return name
+
 
 class Collection(db.DynamicDocument):
     meta = {'collection': 'collections'}
@@ -25,7 +26,7 @@ class Collection(db.DynamicDocument):
     name = db.StringField()
     games = db.ListField()
     description = db.StringField()
-    imageURL = db.URLField()
+    imageURL = db.StringField()
     date_created = db.DateTimeField(default=datetime.date.today())
     is_private = db.BooleanField(default=False)
 
@@ -48,12 +49,6 @@ class Collection(db.DynamicDocument):
         collection.is_private = True if collection.is_private == False else False
         collection.save()
         return collection
-    
-    def add_game_to_collection(self, user_email, game_id, collection_name):
-        if game_id not in self.collections[collection_name]['games']:
-            self.collections[collection_name]['games'].append(game_id)
-            self.save()
-        return self
 
 
 class User(UserMixin, db.DynamicDocument):
@@ -64,7 +59,7 @@ class User(UserMixin, db.DynamicDocument):
     date_registered = db.DateTimeField(default=datetime.datetime.utcnow())
     real_name = db.StringField()
     city = db.StringField()
-    avatar_url = db.URLField(default='https://irac.me/wp-content/uploads/2017/08/irac-user-gravatar-blue-e1503260290469.png')
+    avatar_url = db.StringField(default='https://irac.me/wp-content/uploads/2017/08/irac-user-gravatar-blue-e1503260290469.png')
     collections = db.DictField()
     saved_games = db.DictField()
     is_private = db.BooleanField(default=False)

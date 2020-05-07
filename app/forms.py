@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, SelectField, DateField, TextAreaField, FormField
 from wtforms.fields.html5 import URLField
 from wtforms.validators import InputRequired, Email, Length, Optional
@@ -31,4 +32,4 @@ class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[Optional()])
     name = StringField('Real Name', validators=[Optional()])
     city = StringField('City', validators=[Optional()])
-    avatar_url = URLField('Avatar', validators=[Optional()])
+    avatar = FileField(validators=[Optional()])

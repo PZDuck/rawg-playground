@@ -34,12 +34,10 @@
               </ul>
               {% endif %}
             </div>
+            
+              <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse" style="border-radius: 0;">More</button>
 
-          <div class="input-group-btn">
-            <div class="btn-group" role="group">
-              <div class="dropdown dropdown-lg">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                <div class="collapse" id="searchCollapse" role="menu" style="width: 100%;">
 
                     <div class="form-group">{{ form.publishers.label }} {{ form.publishers(class="form-control custom-select") }}
                       {% if form.publishers.errors %}
@@ -70,9 +68,7 @@
                       </ul>
                       {% endif %}
                     </div>
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
           

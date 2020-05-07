@@ -22,11 +22,10 @@
               {% endif %}
             </div>
 
-          <div class="input-group-btn">
-            <div class="btn-group" role="group">
-              <div class="dropdown dropdown-lg">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+
+              <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse" style="border-radius: 0;"><div class="fa fa-caret-down"></div></button>
+
+                <div class="collapse" id="searchCollapse" role="menu" style="width: 100%;">
 
                     <div class="form-group">{{ form.publishers.label }} {{ form.publishers(class="form-control custom-select") }}
                       {% if form.publishers.errors %}
@@ -59,9 +58,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              <button class="btn btn-primary">Search</button>
         </form>
       </div>
 	  </div>
