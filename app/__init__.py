@@ -8,10 +8,9 @@ app = Flask(__name__)
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'test_database',
-    'host': os.environ.get('MONGO_URL')
+    'host': 'mongodb://localhost:27017/test_database'
 }
-
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = 'yasosalmenyaebalidvajdi'
 app.config['IMAGE_UPLOADS'] = os.path.join(os.getcwd(), 'app', 'static', 'users') 
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = ['PNG', 'JPG', 'JPEG', 'BMP']
 
