@@ -7,11 +7,13 @@ from . import app, db
 import json, requests
 
 
-'''
-Main routes
-'''
+"""
 
-# Index Page
+Main routes
+
+"""
+
+# Landing Page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     top_rated = requests.get('https://api.rawg.io/api/games?page_size=10').json()
@@ -52,6 +54,7 @@ def game_details(game_id):
     game = requests.get(f'https://api.rawg.io/api/games/{game_id}').json()
     screenshots = requests.get(f'https://api.rawg.io/api/games/{game_id}/screenshots').json()
     suggested = requests.get(f'https://api.rawg.io/api/games/{game_id}/suggested').json()
+    
     return render_template('details.html', game=game, screenshots=screenshots, suggested=suggested)
 
 # Collection Page
@@ -59,28 +62,43 @@ def game_details(game_id):
 def collection_details(username, collection):
     user = User.objects(username=username).first()
     collection = user.collections[collection]
+    
     games = []
     for game_id in collection['games']:
         games.append(requests.get(f'https://api.rawg.io/api/games/{game_id}').json())
+    
     return render_template('collection.html', collection=collection, games=games, user=user)
 
 
-'''
+"""
+
 Routes used by JS Axios
-'''
+* /get-games returns a json of games matching the given parameters
+* /save-game adds the game to current user's list of saved games as a key
+and adds the game's state (finished, currently playing, want to play) as a value
+* /create-collection creates a new collection in both User and Collection schemas
+* /add-to-collection adds a game to the selected collection's games list (for User schema only)
+* /delete-collection deletes the collection from both User and Collection schemas
+* /toggle-private changes the state of is_private state for both User and Collection schemas
+
+"""
 
 @app.route('/get-games', methods=['POST'])
 def get_games():
     data = request.get_json()
+    
     url = data['data']['url']
     params = data['data']['params']
+    
     resp = requests.get(url, params=params)
+    
     return resp.json()
 
 @app.route('/save-game', methods=['POST'])
 @login_required
 def save_game():
     resp = request.get_json()
+    
     data = resp['data']
     user = User.objects(email=current_user.email).first()
     
@@ -92,6 +110,7 @@ def save_game():
     
     user.save_game(data['id'], data['status'])
     session['saved_games'] = list(user.saved_games.keys())
+    
     return "OK", 200
 
 @app.route('/create-collection', methods=['POST'])
@@ -110,8 +129,10 @@ def create_collection():
 @login_required
 def add_to_collection():
     data = request.get_json()
+    
     user = User.objects(email=current_user.email).first()
     user.add_game_to_collection(data['data']['game_id'], data['data']['collection_name'])
+    
     return "OK", 200
 
 @app.route('/delete-collection', methods=['POST'])
@@ -132,7 +153,6 @@ def toggle_private():
 
     user = User.objects(email=current_user.email).first()
     user.toggle_private(data['data']['collection_name'])
-
     Collection.toggle_private(data['data']['collection_name'])
 
     return "OK", 200

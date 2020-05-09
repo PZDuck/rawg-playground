@@ -7,10 +7,17 @@ from app.utils import allowed_img, upload_avatar
 from app import app
 
 import requests
+import os
 
 bp_users = Blueprint('users', __name__, template_folder='templates', static_folder='static')
-    
-# Registration/Authentication routes
+
+
+"""
+
+User authentication, registration and profile routes
+
+"""
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegForm()
@@ -29,6 +36,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated == True:
+        
         return redirect('/')
     
     form = LoginForm()
@@ -38,6 +46,7 @@ def login():
             if user:
                 login_user(user)
                 session['saved_games'] = [key for key in current_user.saved_games.keys()]
+                
                 return redirect('/')
     
     return render_template('login.html', form=form)
@@ -47,15 +56,16 @@ def login():
 @login_required
 def logout():
     logout_user()
+    
     return redirect('/')
 
 
-# User account page
 @app.route('/account/<username>', methods=['GET', 'POST'])
 @login_required
 def account(username):
 
     if current_user.username == username:
+        # wtp = want to play, cp = currently playing
         games = {'wtp': [], 'cp': [], 'finished': []}
         user_games = list(current_user.saved_games.keys())
         for game in user_games:
@@ -77,6 +87,7 @@ def account(username):
     else:
         user = User.objects(username=username).first()
 
+        # wtp = want to play, cp = currently playing
         games = {'wtp': [], 'cp': [], 'finished': []}
         user_games = list(user.saved_games.keys())
         for game in user_games:

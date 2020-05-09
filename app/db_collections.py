@@ -1,3 +1,11 @@
+"""
+
+The application's logic for communication with a database. It includes User schema
+and Collection schema. Collection schema is a duplicate of User's collections field,
+which is used to speed up the process of retrieving user's public collections.
+
+"""
+
 from flask_bcrypt import Bcrypt
 from flask_mongoengine import MongoEngine, DynamicDocument
 from flask_login import UserMixin

@@ -1,3 +1,10 @@
+"""
+
+Helper functions for uploading images.
+
+"""
+
+
 import os
 from . import app
 from flask_login import current_user
