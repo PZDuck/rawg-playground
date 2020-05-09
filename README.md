@@ -1,5 +1,7 @@
 # RAWG Playground #
 
+![Alt text](https://github.com/PZDuck/rawg-playground/blob/master/capture.png)
+
 Application that utilizes [RAWG API](https://api.rawg.io/docs/) to let a user search for desired games depending on the search criteria (either by the part of the name, or by additional query parameters including publisher and genre).
  
 **Core functionality**: Searching for games
