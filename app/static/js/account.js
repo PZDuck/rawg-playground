@@ -3,11 +3,16 @@ $(document).ready(function() {
   // Get data from form and create a new collection
   $('.create-collection').on('click', async function(event) {
     event.preventDefault()
-    await axios.post('/create-collection', { data: {
-      'collection_name': $('#collection_name')[0].value,
-      'collection_description': $('#description')[0].value,
-      'collection_image': $('#image')[0].value,
-      'date_created': $('#date_created')[0].value
+
+    let formData = new FormData()
+
+    formData.append('collection_name', $('#collection_name')[0].value)
+    formData.append('collection_description', $('#description')[0].value)
+    formData.append('collection_image', $('#image')[0].files[0])
+    formData.append('date_created', $('#date_created')[0].value)
+ 
+    await axios.post('/create-collection', formData, { headers: {
+      'Content-Type': 'multipart/form-data'
       }
     })  
     $('#createCollectionModal').modal('hide')

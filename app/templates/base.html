@@ -33,7 +33,6 @@
               <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="{{ url_for('search') }}">Browse</a></li>
-                <!-- <li><a href="{{ url_for('contact') }}">Contact</a></li> -->
                 {% if not current_user.is_anonymous %}
                 <li><a href="{{ url_for('account', username=current_user.username) }}">Account</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>

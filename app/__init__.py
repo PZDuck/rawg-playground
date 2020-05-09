@@ -11,7 +11,7 @@ app.config['MONGODB_SETTINGS'] = {
     'host': 'mongodb://localhost:27017/test_database'
 }
 app.config['SECRET_KEY'] = 'yasosalmenyaebalidvajdi'
-app.config['IMAGE_UPLOADS'] = os.path.join(os.getcwd(), 'app', 'static', 'avatars') 
+app.config['IMAGE_UPLOADS'] = os.path.join(os.getcwd(), 'app', 'static', 'users') 
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = ['PNG', 'JPG', 'JPEG', 'BMP']
 
 db = MongoEngine(app)

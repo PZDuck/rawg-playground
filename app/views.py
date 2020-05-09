@@ -2,6 +2,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from app.forms import RegForm, LoginForm, SearchForm, EditProfileForm
 from app.db_collections import load_user, User, Collection
+from app.utils import allowed_img, upload_collection_img
 from . import app, db
 import json, requests
 
@@ -24,14 +25,9 @@ def index():
     genres = requests.get('https://api.rawg.io/api/genres', params={ 'ordering': '-games_count' }).json()
     form.genres.choices += [(i['id'], i['name']) for i in genres['results']]
 
-    public_collection = Collection.objects(is_private=False).all()
+    public_collections = Collection.objects(is_private=False).all()
 
-    return render_template('index.html', games=games, form=form, collections=public_collection)
-
-# Contact Us Page
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
+    return render_template('index.html', games=games, form=form, collections=public_collections)
 
 # Search Page with the Search Form
 @app.route('/search', methods=['GET', 'POST'])
@@ -50,7 +46,7 @@ def search():
 
     return render_template('search.html', form=form, args=args)
 
-# Detail Page for a particular Game
+# Game Detail Page
 @app.route('/game/<int:game_id>', methods=['GET', 'POST'])
 def game_details(game_id):
     game = requests.get(f'https://api.rawg.io/api/games/{game_id}').json()
@@ -58,7 +54,7 @@ def game_details(game_id):
     suggested = requests.get(f'https://api.rawg.io/api/games/{game_id}/suggested').json()
     return render_template('details.html', game=game, screenshots=screenshots, suggested=suggested)
 
-# Collection page
+# Collection Page
 @app.route('/collections/<username>/<collection>', methods=['GET', 'POST'])
 def collection_details(username, collection):
     user = User.objects(username=username).first()
@@ -73,7 +69,6 @@ def collection_details(username, collection):
 Routes used by JS Axios
 '''
 
-# Get list of games after the search form has been submitted
 @app.route('/get-games', methods=['POST'])
 def get_games():
     data = request.get_json()
@@ -82,7 +77,6 @@ def get_games():
     resp = requests.get(url, params=params)
     return resp.json()
 
-# Save a particular game to the current user's list of saved games
 @app.route('/save-game', methods=['POST'])
 @login_required
 def save_game():
@@ -100,20 +94,18 @@ def save_game():
     session['saved_games'] = list(user.saved_games.keys())
     return "OK", 200
 
-# Create a new empty collection for the current user
 @app.route('/create-collection', methods=['POST'])
 @login_required
 def create_collection():
-    data = request.get_json()
-    collection = data['data']
-    
+    data = request.form
+    image = upload_collection_img(request)
+
     user = User.objects(email=current_user.email).first()
-    user.create_collection(collection['collection_name'], collection['collection_description'], collection['collection_image'], collection['date_created'])
-    Collection.create_collection(user['email'], current_user['username'], collection['collection_name'], collection['collection_description'], collection['collection_image'])
+    user.create_collection(data['collection_name'], data['collection_description'], image, data['date_created'])
+    Collection.create_collection(user['email'], current_user['username'], data['collection_name'], data['collection_description'], image)
  
     return "OK", 200
 
-# Add a particular game to the current user's collection
 @app.route('/add-to-collection', methods=['POST'])
 @login_required
 def add_to_collection():

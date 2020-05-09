@@ -25,7 +25,7 @@ class SearchForm(FlaskForm):
 class CreateCollectionForm(FlaskForm):
     collection_name = StringField('Name', validators=[InputRequired()])
     description = TextAreaField('Description', validators=[Optional()])
-    image = URLField('Image', validators=[Optional()])
+    image = FileField(validators=[Optional()])
     date_created = DateField(format='%Y-%m-%d', default=datetime.date.today(), render_kw={'disabled':''})
 
 class EditProfileForm(FlaskForm):

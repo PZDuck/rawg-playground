@@ -31,29 +31,31 @@
         {% endfor %}
       </ul>
 
+      <div class="add-rm-btns">
       {% if current_user.is_anonymous %}
       <small>You need to be logged in to save games</small>
       {% else %}
-      <button id="btn-game" data-gameid="{{ game.id }}" class="btn {% if game.id|string in current_user.saved_games %}btn-danger" data-action="remove">Remove from games{% else %}btn-primary" data-toggle="modal" data-target="#add-game-modal">Add to My Games{% endif %}</button>
-      <button id="btn-collection" class="btn btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
+      <button id="btn-game" data-gameid="{{ game.id }}" class="btn btn-sm {% if game.id|string in current_user.saved_games %}btn-danger" data-action="remove">Remove from games{% else %}btn-primary" data-toggle="modal" data-target="#add-game-modal">Add to My Games{% endif %}</button>
+      {% if current_user.collections|length == 0 %}
+      <p>You don't have any collections</p>
+      {% else %}
+      <button id="btn-collection" class="btn btn-sm btn-primary collection add-collection" data-toggle="modal" data-target="#add-to-collection-modal">Add to My Collection</button>
       {% endif %}
+      {% endif %}
+      </div>
 
       <!-- Add to Collection Modal -->
       <div class="modal fade" id="add-to-collection-modal" tabindex="-1" role="dialog" aria-labelledby="add-to-collection-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <img class="center-block" src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle img-responsive">
-            </div>
-
             <div class="modal-body">
               <div class="md-form mb-5">
+                <label data-error="wrong" data-success="right" for="collection-name">Collection</label>
                 <select id="collection-name" class="form-control validate">
                   {% for collection in current_user.collections %}
                     <option values="{{ collection }}">{{ collection }}</option>
                   {% endfor %}
                 </select>
-                <label data-error="wrong" data-success="right" for="collection-name">Collection</label>
               </div>
             </div>
 
@@ -72,12 +74,12 @@
 
             <div class="modal-body">
               <div class="md-form mb-5">
+                <label data-error="wrong" data-success="right" for="status">Mark As</label>
                 <select id="status" class="form-control validate">
                     <option value="wtp">Want to Play</option>
                     <option value="cp">Currently Playing</option>
                     <option value="finished">Finished Playing</option>
                 </select>
-                <label data-error="wrong" data-success="right" for="status">Mark As</label>
               </div>
             </div>
 
